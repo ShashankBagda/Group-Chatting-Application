@@ -1,3 +1,5 @@
+python -m PyQt5.uic.pyuic -x main.ui -o main.py
+
 # Python Desktop Chat Application
 
 A [PubNub](https://www.pubnub.com/?devrel_gh=python-desktop-chat-application) powered Python 3 chat application. It's cross-platform desktop, thanks to PyQt. It sends and recieves chat messages using the PubNub network, so chat messaging is generic for devices/programming languages.
