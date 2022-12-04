@@ -51,6 +51,8 @@ def exit_handler():
 
 
 class UI(QMainWindow):
+    window = QMainWindow
+
     def exit_handler():
         os._exit(1)
 
@@ -78,55 +80,55 @@ class UI(QMainWindow):
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Username Input
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    window.name, okPressed = QInputDialog.getText(
+        window,
+        "Username input",
+        "Input your chat username",
+        QLineEdit.Normal,
+        ""
+    )
 
-    class UI2(QMainWindow):
-        name, okPressed = QInputDialog.getText(
-            window,
-            "Username input",
-            "Input your chat username",
-            QLineEdit.Normal,
-            ""
-        )
-
-        if okPressed and name != '' and len(name) < 20:
-            print('Username:', name)
-        else:
-            exit_handler()  # invalid username, exiting
+    if okPressed and name != '' and len(name) < 20:
+        print('Username:', name)
+    else:
+        exit_handler()  # invalid username, exiting
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # UI Send/Receive Message Functions
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-        def display_new_messages():
-            while new_messages:
-                if len(new_messages) > 0:
-                    msg = new_messages.pop(0)
-                    msg = format_message(msg)
-                    self.text_area.appendPlainText(msg)
 
-        def send_message():
-            pubnub_publish(
-                # {"message": self.message_input.text()})
-                {"name": name, "message": self.message_input.text()})
-            self.message_input.clear()
+    def display_new_messages():
+        while new_messages:
+            if len(new_messages) > 0:
+                msg = new_messages.pop(0)
+                msg = format_message(msg)
+                UI.text_area.appendPlainText(msg)
+
+    def send_message():
+        pubnub_publish(
+            # {"message": self.message_input.text()})
+            {"name": UI.name, "message": UI.message_input.text()})
+        UI.message_input.clear()
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Qt Signals
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-        self.message_input.returnPressed.connect(send_message)
-        timer = QTimer()
-        timer.timeout.connect(display_new_messages)
-        timer.start(1000)
+    window.message_input.returnPressed.connect(send_message)
+    timer = QTimer()
+    timer.timeout.connect(display_new_messages)
+    timer.start(1000)
 
-        # show
-        self.show()
+    # show
+    window.show()
 
 
 # Initialize the app
 app = QApplication([])
 #app = QApplication(sys.argv)
 app.aboutToQuit.connect(UI.exit_handler)
-window = UI()
+app.window = QMainWindow
+UI()
 app.exec_()
