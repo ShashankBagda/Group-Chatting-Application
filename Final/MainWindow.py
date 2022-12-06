@@ -107,8 +107,8 @@ class Ui_MainWindow(object):
         self.channel = 'chat-channel'
         pnconfig = PNConfiguration()
 
-        pnconfig.publish_key = 'pub-c-4c03cf9a-687e-46e7-b1ba-ab62e84bba78'
-        pnconfig.subscribe_key = 'sub-c-22fb1c63-ab41-4e2f-a9a2-5e20d62ce2c3'
+        pnconfig.publish_key = 'pub-c-47c03144-b0b5-4b72-9d22-7acd2eeeca02'
+        pnconfig.subscribe_key = 'sub-c-cc9045b2-25fe-4d6e-810b-eae40bc74dea'
 
         self.pubnub = PubNub(pnconfig)
         self.retranslateUi(MainWindow)
